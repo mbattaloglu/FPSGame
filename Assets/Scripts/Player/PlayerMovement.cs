@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMotor : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     private CharacterController controller;
     private Vector3 playerVelocity;

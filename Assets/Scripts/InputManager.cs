@@ -6,44 +6,46 @@ public class InputManager : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerInput.OnFootActions onFoot;
 
-    private PlayerMotor motor;
+    private PlayerMovement motor; 
     private PlayerLook look;
+
+    public PlayerInput.OnFootActions OnFoot { get => onFoot; set => onFoot = value; }
 
     private void Awake()
     {
         playerInput = new PlayerInput();
-        onFoot = playerInput.OnFoot;
+        OnFoot = playerInput.OnFoot;
 
-        motor = GetComponent<PlayerMotor>();
+        motor = GetComponent<PlayerMovement>();
         look = GetComponent<PlayerLook>();
 
         //Anytime the jump button is pressed, call the Jump() 
         //method with the callback from the Input System
-        onFoot.Jump.performed += ctx => motor.Jump();
+        OnFoot.Jump.performed += ctx => motor.Jump();
 
-        onFoot.Crouch.performed += ctx => motor.Crouch();
-        onFoot.Sprint.performed += ctx => motor.Sprint();
-        onFoot.Sprint.canceled += ctx => motor.Sprint();
+        OnFoot.Crouch.performed += ctx => motor.Crouch();
+        OnFoot.Sprint.performed += ctx => motor.Sprint();
+        OnFoot.Sprint.canceled += ctx => motor.Sprint();
     }
 
     private void OnEnable()
     {
-        onFoot.Enable();
+        OnFoot.Enable();
     }
 
     private void OnDisable()
     {
-        onFoot.Disable();
+        OnFoot.Disable();
     }
 
     private void FixedUpdate()
     {
-        motor.ProcessMove(onFoot.Movement.ReadValue<Vector2>());
+        motor.ProcessMove(OnFoot.Movement.ReadValue<Vector2>());
     }
 
     private void LateUpdate()
     {
-        look.ProcessLook(onFoot.Look.ReadValue<Vector2>());
+        look.ProcessLook(OnFoot.Look.ReadValue<Vector2>());
     }
 
 
